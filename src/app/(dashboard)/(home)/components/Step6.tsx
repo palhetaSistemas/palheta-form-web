@@ -4,7 +4,7 @@ import { useFormContext } from "@/src/context/Contex";
 
 export function Step6() {
   const { formData, setFormData } = useFormContext();
-
+  console.log("formData", formData);
   return (
     <>
       <span className="font-bold text-lg text-[#123262] w-max mx-auto">
@@ -24,19 +24,21 @@ export function Step6() {
             value={formData.churchWidth}
           />
         </div>
-        <div className="flex flex-col">
-          <label className="text-default-600 w-max font-semibold text-sm">
-            Comprimento
-          </label>
-          <input
-            className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
-            placeholder="Insira o Comprimento"
-            onChange={(e) =>
-              setFormData({ ...formData, churchLength: e.target.value })
-            }
-            value={formData.churchLength}
-          />
-        </div>
+        {formData.objective !== 2 && (
+          <div className="flex flex-col">
+            <label className="text-default-600 w-max font-semibold text-sm">
+              Comprimento
+            </label>
+            <input
+              className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+              placeholder="Insira o Comprimento"
+              onChange={(e) =>
+                setFormData({ ...formData, churchLength: e.target.value })
+              }
+              value={formData.churchLength}
+            />
+          </div>
+        )}
       </div>
     </>
   );

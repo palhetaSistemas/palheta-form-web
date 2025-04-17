@@ -1,7 +1,7 @@
-import Image from "next/image";
-import { FormSheet } from "./FormSheet";
-import { useState } from "react";
 import { cn } from "@/src/lib/utils";
+import Image from "next/image";
+import { useState } from "react";
+import { FormSheet } from "./FormSheet";
 
 export function StartView() {
   const [openFormSheet, setOpenFormSheet] = useState(false);
@@ -27,10 +27,10 @@ export function StartView() {
             openFormSheet && "opacity-0"
           )}
         >
-          <span className="font-bold text-2xl text-white">
+          <span className="font-bold text-2xl text-center text-white">
             SOLICITE SEU ORÇAMENTO
           </span>
-          <span className="text-white">
+          <span className="text-white text-center">
             Por favor, preencha e envie este formulário para receber seu
             orçamento de projeto.
           </span>

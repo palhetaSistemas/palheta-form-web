@@ -1,5 +1,10 @@
 "use client";
 import { LocationProps } from "@/src/@types/forms";
+
+type CountryProps = LocationProps & {
+  flag: string;
+};
+
 import {
   Command,
   CommandEmpty,
@@ -10,7 +15,6 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { ScrollArea } from "@/src/components/ui/scroll-area";
@@ -28,8 +32,43 @@ export function Step1() {
     null
   );
   const [selectedCity, setSelectedCity] = useState<LocationProps | null>(null);
+  const [countryList, setCountryList] = useState<CountryProps[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<CountryProps | null>(
+    null
+  );
+  const [isCountryListOpen, setIsCountryListOpen] = useState(false);
   const [isStateListOpen, setIsStateListOpen] = useState(false);
   const [isCityListOpen, setIsCityListOpen] = useState(false);
+  const [cityInput, setCityInput] = useState("");
+
+  async function handleIBGECountry() {
+    try {
+      const response = await fetch("https://restcountries.com/v3.1/all");
+      const data = await response.json();
+
+      const countries: CountryProps[] = data.map((country: any) => ({
+        label: country.translations.por.common || country.name.common,
+        value: country.cca2,
+        id: country.ccn3,
+        flag: country.flags.svg,
+      }));
+
+      countries.sort((a, b) => a.label.localeCompare(b.label));
+
+      setCountryList(countries);
+
+      const brazil = countries.find((country) => country.value === "BR");
+      if (brazil) {
+        setSelectedCountry(brazil);
+        setFormData((prev) => ({
+          ...prev,
+          country: brazil.label,
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching countries:", error);
+    }
+  }
 
   async function handleIBGEState() {
     const connect = await IBGEAPI(`/estados/?orderBy=nome`);
@@ -61,6 +100,10 @@ export function Step1() {
   }
 
   useEffect(() => {
+    handleIBGECountry();
+  }, []);
+
+  useEffect(() => {
     handleIBGEState();
   }, []);
 
@@ -82,6 +125,16 @@ export function Step1() {
     }
   }, [selectedCity]);
 
+  useEffect(() => {
+    if (selectedCountry?.value !== "BR" && cityInput) {
+      setFormData((prev) => ({
+        ...prev,
+        city: cityInput,
+        state: "", // Clear state when not Brazil
+      }));
+    }
+  }, [cityInput, selectedCountry]);
+
   return (
     <>
       <span className="font-bold text-lg text-[#123262] w-max mx-auto">
@@ -90,20 +143,31 @@ export function Step1() {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col">
           <label className="text-default-600 w-max font-semibold text-sm">
-            Estado*
+            País*
           </label>
           <DropdownMenu
-            open={isStateListOpen}
-            onOpenChange={setIsStateListOpen}
+            open={isCountryListOpen}
+            onOpenChange={setIsCountryListOpen}
           >
             <DropdownMenuTrigger asChild>
               <button
                 className={cn(
                   "w-full flex items-center rounded-xl border-2 border-[#123262] h-12 px-4",
-                  !selectedState ? "text-default-400" : "text-[#123262]"
+                  !selectedCountry ? "text-default-400" : "text-[#123262]"
                 )}
               >
-                {selectedState ? selectedState.label : "Selecione seu Estado"}
+                {selectedCountry ? (
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={selectedCountry.flag}
+                      alt={selectedCountry.label}
+                      className="w-6 h-4 object-cover"
+                    />
+                    {selectedCountry.label}
+                  </div>
+                ) : (
+                  "Selecione seu País"
+                )}
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -125,17 +189,28 @@ export function Step1() {
                 <CommandEmpty>Não encontrado.</CommandEmpty>
                 <CommandGroup>
                   <ScrollArea
-                    className={cn(stateList.length >= 5 ? "h-60" : "h-auto")}
+                    className={cn(countryList.length >= 5 ? "h-60" : "h-auto")}
                   >
-                    {stateList.map((state) => (
+                    {countryList.map((country) => (
                       <CommandItem
-                        key={state.id}
+                        key={country.id}
                         onSelect={() => {
-                          setSelectedState(state);
-                          setIsStateListOpen(false);
+                          setSelectedCountry(country);
+                          setIsCountryListOpen(false);
+                          setFormData((prev) => ({
+                            ...prev,
+                            country: country.label,
+                          }));
                         }}
                       >
-                        {state.label}
+                        <div className="flex items-center gap-2">
+                          <img
+                            src={country.flag}
+                            alt={country.label}
+                            className="w-6 h-4 object-cover"
+                          />
+                          {country.label}
+                        </div>
                       </CommandItem>
                     ))}
                   </ScrollArea>
@@ -144,60 +219,140 @@ export function Step1() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex flex-col">
-          <label className="text-default-600 w-max font-semibold text-sm">
-            Cidade*
-          </label>
-          <DropdownMenu open={isCityListOpen} onOpenChange={setIsCityListOpen}>
-            <DropdownMenuTrigger asChild>
-              <button
-                className={cn(
-                  "w-full flex items-center rounded-xl border-2 border-[#123262] h-12 px-4",
-                  !selectedCity ? "text-default-400" : "text-[#123262]"
-                )}
+        {selectedCountry?.value === "BR" ? (
+          <>
+            <div className="flex flex-col">
+              <label className="text-default-600 w-max font-semibold text-sm">
+                Estado*
+              </label>
+              <DropdownMenu
+                open={isStateListOpen}
+                onOpenChange={setIsStateListOpen}
               >
-                {selectedCity ? selectedCity.label : "Selecione sua Cidade"}
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuArrow />
-              <Command
-                filter={(value, search) => {
-                  if (
-                    value
-                      .toLowerCase()
-                      .normalize("NFD")
-                      .replace(/[\u0300-\u036f]/g, "")
-                      .includes(search.toLowerCase())
-                  )
-                    return 1;
-                  return 0;
-                }}
-              >
-                <CommandInput placeholder="Pesquisar..." />
-                <CommandEmpty>Não encontrado.</CommandEmpty>
-                <CommandGroup>
-                  <ScrollArea
-                    className={cn(cityList.length >= 5 ? "h-60" : "h-auto")}
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={cn(
+                      "w-full flex items-center rounded-xl border-2 border-[#123262] h-12 px-4",
+                      !selectedState ? "text-default-400" : "text-[#123262]"
+                    )}
                   >
-                    {cityList &&
-                      cityList.map((city) => (
-                        <CommandItem
-                          key={city.id}
-                          onSelect={() => {
-                            setSelectedCity(city);
-                            setIsCityListOpen(false);
-                          }}
-                        >
-                          {city.label}
-                        </CommandItem>
-                      ))}
-                  </ScrollArea>
-                </CommandGroup>
-              </Command>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+                    {selectedState
+                      ? selectedState.label
+                      : "Selecione seu Estado"}
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuArrow />
+                  <Command
+                    filter={(value, search) => {
+                      if (
+                        value
+                          .toLowerCase()
+                          .normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")
+                          .includes(search.toLowerCase())
+                      )
+                        return 1;
+                      return 0;
+                    }}
+                  >
+                    <CommandInput placeholder="Pesquisar..." />
+                    <CommandEmpty>Não encontrado.</CommandEmpty>
+                    <CommandGroup>
+                      <ScrollArea
+                        className={cn(
+                          stateList.length >= 5 ? "h-60" : "h-auto"
+                        )}
+                      >
+                        {stateList.map((state) => (
+                          <CommandItem
+                            key={state.id}
+                            onSelect={() => {
+                              setSelectedState(state);
+                              setIsStateListOpen(false);
+                            }}
+                          >
+                            {state.label}
+                          </CommandItem>
+                        ))}
+                      </ScrollArea>
+                    </CommandGroup>
+                  </Command>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div className="flex flex-col">
+              <label className="text-default-600 w-max font-semibold text-sm">
+                Cidade*
+              </label>
+              <DropdownMenu
+                open={isCityListOpen}
+                onOpenChange={setIsCityListOpen}
+              >
+                <DropdownMenuTrigger asChild>
+                  <button
+                    className={cn(
+                      "w-full flex items-center rounded-xl border-2 border-[#123262] h-12 px-4",
+                      !selectedCity ? "text-default-400" : "text-[#123262]"
+                    )}
+                  >
+                    {selectedCity ? selectedCity.label : "Selecione sua Cidade"}
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuArrow />
+                  <Command
+                    filter={(value, search) => {
+                      if (
+                        value
+                          .toLowerCase()
+                          .normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")
+                          .includes(search.toLowerCase())
+                      )
+                        return 1;
+                      return 0;
+                    }}
+                  >
+                    <CommandInput placeholder="Pesquisar..." />
+                    <CommandEmpty>Não encontrado.</CommandEmpty>
+                    <CommandGroup>
+                      <ScrollArea
+                        className={cn(cityList.length >= 5 ? "h-60" : "h-auto")}
+                      >
+                        {cityList &&
+                          cityList.map((city) => (
+                            <CommandItem
+                              key={city.id}
+                              onSelect={() => {
+                                setSelectedCity(city);
+                                setIsCityListOpen(false);
+                              }}
+                            >
+                              {city.label}
+                            </CommandItem>
+                          ))}
+                      </ScrollArea>
+                    </CommandGroup>
+                  </Command>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col">
+            <label className="text-default-600 w-max font-semibold text-sm">
+              Cidade*
+            </label>
+            <input
+              type="text"
+              value={cityInput}
+              onChange={(e) => setCityInput(e.target.value)}
+              placeholder="Digite sua cidade"
+              className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 text-[#123262]"
+            />
+          </div>
+        )}
       </div>
     </>
   );
