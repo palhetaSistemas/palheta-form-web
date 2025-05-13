@@ -40,7 +40,9 @@ export function Step5() {
               )}
             />
           </div>
-          <span className="text-[#123262] text-bold">ATÉ 100 MIL</span>
+          <span className="text-[#123262] text-bold">
+            {formData.objective !== 2 ? "ATÉ 100 MIL" : "ATÉ 20 MIL"}
+          </span>
         </label>
         <label
           onClick={() => {
@@ -68,7 +70,9 @@ export function Step5() {
               )}
             />
           </div>
-          <span className="text-[#123262] text-bold">ATÉ 300 MIL</span>
+          <span className="text-[#123262] text-bold">
+            {formData.objective !== 2 ? "ATÉ 300 MIL" : "ATÉ 50 MIL"}
+          </span>
         </label>
         <label
           onClick={() => {
@@ -96,7 +100,10 @@ export function Step5() {
               )}
             />
           </div>
-          <span className="text-[#123262] text-bold">ATÉ 500 MIL</span>
+          <span className="text-[#123262] text-bold">
+            {" "}
+            {formData.objective !== 2 ? "ATÉ 500 MIL" : "ATÉ 100 MIL"}
+          </span>
         </label>
         <label
           onClick={() => {
@@ -125,65 +132,75 @@ export function Step5() {
             />
           </div>
           <span className="text-[#123262] text-bold">
-            ENTRE 700 MIL E 1 MILHÃO
+            {formData.objective !== 2
+              ? "ENTRE 700 MIL E 1 MILHÃO"
+              : "100 MIL +"}
           </span>
         </label>
-        <label
-          onClick={() => {
-            if (formData.expectedCost === 4) {
-              setFormData({ ...formData, expectedCost: null });
-            } else {
-              setFormData({ ...formData, expectedCost: 4 });
-            }
-          }}
-          className={cn(
-            "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-            formData.expectedCost === 4 && "border-[#123262] shadow-lg"
-          )}
-        >
-          <div
-            className={cn(
-              "w-5 h-5 border rounded-full flex items-center justify-center",
-              formData.expectedCost === 4 && "border-none"
-            )}
-          >
-            <div
+        {formData.objective !== 2 && (
+          <>
+            <label
+              onClick={() => {
+                if (formData.expectedCost === 4) {
+                  setFormData({ ...formData, expectedCost: null });
+                } else {
+                  setFormData({ ...formData, expectedCost: 4 });
+                }
+              }}
               className={cn(
-                "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                formData.expectedCost === 4 && "opacity-100"
+                "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
+                formData.expectedCost === 4 && "border-[#123262] shadow-lg"
               )}
-            />
-          </div>
-          <span className="text-[#123262] text-bold">ENTRE 1 E 3 MILHÕES</span>
-        </label>
-        <label
-          onClick={() => {
-            if (formData.expectedCost === 5) {
-              setFormData({ ...formData, expectedCost: null });
-            } else {
-              setFormData({ ...formData, expectedCost: 5 });
-            }
-          }}
-          className={cn(
-            "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-            formData.expectedCost === 5 && "border-[#123262] shadow-lg"
-          )}
-        >
-          <div
-            className={cn(
-              "w-5 h-5 border rounded-full flex items-center justify-center",
-              formData.expectedCost === 5 && "border-none"
-            )}
-          >
-            <div
+            >
+              <div
+                className={cn(
+                  "w-5 h-5 border rounded-full flex items-center justify-center",
+                  formData.expectedCost === 4 && "border-none"
+                )}
+              >
+                <div
+                  className={cn(
+                    "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
+                    formData.expectedCost === 4 && "opacity-100"
+                  )}
+                />
+              </div>
+              <span className="text-[#123262] text-bold">
+                ENTRE 1 E 3 MILHÕES
+              </span>
+            </label>
+            <label
+              onClick={() => {
+                if (formData.expectedCost === 5) {
+                  setFormData({ ...formData, expectedCost: null });
+                } else {
+                  setFormData({ ...formData, expectedCost: 5 });
+                }
+              }}
               className={cn(
-                "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                formData.expectedCost === 5 && "opacity-100"
+                "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
+                formData.expectedCost === 5 && "border-[#123262] shadow-lg"
               )}
-            />
-          </div>
-          <span className="text-[#123262] text-bold">MAIS DE 3 MILHÕES</span>
-        </label>
+            >
+              <div
+                className={cn(
+                  "w-5 h-5 border rounded-full flex items-center justify-center",
+                  formData.expectedCost === 5 && "border-none"
+                )}
+              >
+                <div
+                  className={cn(
+                    "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
+                    formData.expectedCost === 5 && "opacity-100"
+                  )}
+                />
+              </div>
+              <span className="text-[#123262] text-bold">
+                MAIS DE 3 MILHÕES
+              </span>
+            </label>
+          </>
+        )}
       </div>
     </>
   );

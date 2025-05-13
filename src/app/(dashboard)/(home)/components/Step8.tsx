@@ -41,7 +41,9 @@ export function Step8() {
             />
           </div>
           <span className="text-[#123262] text-bold">
-            ENTRE 7 E 12 MIL REAIS
+            {formData.objective !== 2
+              ? "ENTRE 7 E 12 MIL REAIS"
+              : "ENTRE 3 E 5 MIL REAIS"}
           </span>
         </label>
         <label
@@ -71,7 +73,9 @@ export function Step8() {
             />
           </div>
           <span className="text-[#123262] text-bold">
-            ENTRE 15 E 30 MIL REAIS
+            {formData.objective !== 2
+              ? "ENTRE 15 E 30 MIL REAIS"
+              : "ENTRE 5 E 7 MIL REAIS"}
           </span>
         </label>
         <label
@@ -100,66 +104,10 @@ export function Step8() {
               )}
             />
           </div>
-          <span className="text-[#123262] text-bold">ATÉ 15 MIL REAIS</span>
-        </label>
-        <label
-          onClick={() => {
-            if (formData.expectedInvestment === 3) {
-              setFormData({ ...formData, expectedInvestment: null });
-            } else {
-              setFormData({ ...formData, expectedInvestment: 3 });
-            }
-          }}
-          className={cn(
-            "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-            formData.expectedInvestment === 3 && "border-[#123262] shadow-lg"
-          )}
-        >
-          <div
-            className={cn(
-              "w-5 h-5 border rounded-full flex items-center justify-center",
-              formData.expectedInvestment === 3 && "border-none"
-            )}
-          >
-            <div
-              className={cn(
-                "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                formData.expectedInvestment === 3 && "opacity-100"
-              )}
-            />
-          </div>
           <span className="text-[#123262] text-bold">
-            ENTRE 15 E 30 MIL REAIS
-          </span>
-        </label>
-        <label
-          onClick={() => {
-            if (formData.expectedInvestment === 4) {
-              setFormData({ ...formData, expectedInvestment: null });
-            } else {
-              setFormData({ ...formData, expectedInvestment: 4 });
-            }
-          }}
-          className={cn(
-            "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-            formData.expectedInvestment === 4 && "border-[#123262] shadow-lg"
-          )}
-        >
-          <div
-            className={cn(
-              "w-5 h-5 border rounded-full flex items-center justify-center",
-              formData.expectedInvestment === 4 && "border-none"
-            )}
-          >
-            <div
-              className={cn(
-                "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                formData.expectedInvestment === 4 && "opacity-100"
-              )}
-            />
-          </div>
-          <span className="text-[#123262] text-bold">
-            ENTRE 30 E 50 MIL REAIS
+            {formData.objective !== 2
+              ? "ENTRE 30 E 50 MIL REAIS"
+              : "MAIS DE 7 MIL REAIS"}
           </span>
         </label>
       </div>

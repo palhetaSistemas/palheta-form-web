@@ -4,7 +4,6 @@ import { useFormContext } from "@/src/context/Contex";
 
 export function Step6() {
   const { formData, setFormData } = useFormContext();
-  console.log("formData", formData);
   return (
     <>
       <span className="font-bold text-lg text-[#123262] w-max mx-auto">

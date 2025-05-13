@@ -1,9 +1,15 @@
 "use client";
 import { Sheet, SheetContent } from "@/src/components/ui/sheet";
+import { useFormContext } from "@/src/context/Contex";
+import { cn } from "@/src/lib/utils";
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Step0 } from "./Step0";
 import { Step1 } from "./Step1";
-import { ArrowLeft } from "lucide-react";
+import { Step10 } from "./Step10";
+import { Step11 } from "./Step11";
+import { Step12 } from "./Step12";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
 import { Step4 } from "./Step4";
@@ -12,11 +18,6 @@ import { Step6 } from "./Step6";
 import { Step7 } from "./Step7";
 import { Step8 } from "./Step8";
 import { Step9 } from "./Step9";
-import { Step10 } from "./Step10";
-import { Step11 } from "./Step11";
-import { useFormContext } from "@/src/context/Contex";
-import toast from "react-hot-toast";
-import { cn } from "@/src/lib/utils";
 
 interface FormSheetProps {
   open: boolean;
@@ -27,6 +28,8 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
   const { formData } = useFormContext();
   const [currentStep, setCurrentStep] = useState(0);
   const [allowNextStep, setAllowNextStep] = useState(false);
+
+  console.log("currentStep: ", currentStep);
 
   const HandleNextStep = () => {
     if (currentStep === 0) {
@@ -74,7 +77,22 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
-      return setCurrentStep(currentStep + 1);
+      if (formData.objective === 2) {
+        if (formData.churchWidth === "") {
+          return toast.error("Preencha a largura da igreja");
+        } else if (formData.churchWidth !== "") {
+          return setCurrentStep(currentStep + 1);
+        }
+      } else if (formData.objective !== 2) {
+        if (formData.churchWidth === "" || formData.churchLength === "") {
+          return toast.error("Preencha a largura e comprimento da igreja");
+        } else if (
+          formData.churchWidth !== "" &&
+          formData.churchLength !== ""
+        ) {
+          return setCurrentStep(currentStep + 1);
+        }
+      }
     } else if (currentStep === 7) {
       if (formData.firstBudget === null) {
         return toast.error("Preencha se já fez outros orçamentos");
@@ -156,7 +174,22 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         setAllowNextStep(true);
       }
     } else if (currentStep === 6) {
-      setAllowNextStep(true);
+      if (formData.objective === 2) {
+        if (formData.churchWidth === "") {
+          setAllowNextStep(false);
+        } else if (formData.churchWidth !== "") {
+          setAllowNextStep(true);
+        }
+      } else if (formData.objective !== 2) {
+        if (formData.churchWidth === "" || formData.churchLength === "") {
+          setAllowNextStep(false);
+        } else if (
+          formData.churchWidth !== "" &&
+          formData.churchLength !== ""
+        ) {
+          setAllowNextStep(true);
+        }
+      }
     } else if (currentStep === 7) {
       if (formData.firstBudget === null) {
         setAllowNextStep(false);
@@ -228,8 +261,10 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
           <Step9 />
         ) : currentStep === 10 ? (
           <Step10 />
-        ) : (
+        ) : currentStep === 11 ? (
           <Step11 />
+        ) : (
+          <Step12 />
         )}
         <button
           onClick={HandleNextStep}
@@ -238,7 +273,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
             !allowNextStep && "opacity-50 cursor-not-allowed"
           )}
         >
-          PRÓXIMO
+          {currentStep !== 12 ? "PRÓXIMO" : "FINALIZAR"}
         </button>
       </SheetContent>
     </Sheet>
