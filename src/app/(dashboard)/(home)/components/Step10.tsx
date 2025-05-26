@@ -1,10 +1,10 @@
 "use client";
 
 import { useFormContext } from "@/src/context/Contex";
-import { maskPhone } from "@/src/lib/masks";
-import { useEffect, useState } from "react";
 import countryCodes from "@/src/lib/countryCodes.json";
+import { maskPhone } from "@/src/lib/masks";
 import { cn } from "@/src/lib/utils";
+import { useEffect, useState } from "react";
 
 export function Step10() {
   const { formData, setFormData } = useFormContext();
@@ -57,7 +57,7 @@ export function Step10() {
                 <div className="w-8 max-w-8 min-w-8 h-6 bg-[#123262]" />
               )}
               <input
-                className="w-[calc(100%-2.5rem)] h-12 focus:outline-none border-none bg-transparent placeholder:text-default-400"
+                className="w-[calc(100%-2.5rem)] text-[16px] h-12 focus:outline-none border-none bg-transparent placeholder:text-default-400"
                 placeholder="+55"
                 value={countryPhoneCode}
                 onChange={(e) => setCountryPhoneCode(e.target.value)}
@@ -72,7 +72,7 @@ export function Step10() {
             >
               <input
                 disabled={countryCode === ""}
-                className="w-full h-12 focus:outline-none border-none bg-transparent placeholder:text-default-400"
+                className="w-full h-12 text-[16px] focus:outline-none border-none bg-transparent placeholder:text-default-400"
                 placeholder="(99) 9 9999-9999"
                 onChange={(e) =>
                   setFormData({

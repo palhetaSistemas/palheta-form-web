@@ -1,7 +1,6 @@
 "use client";
 import { useFormContext } from "@/src/context/Contex";
 import { cn } from "@/src/lib/utils";
-import { useState } from "react";
 
 export function Step2() {
   const { formData, setFormData } = useFormContext();
@@ -180,7 +179,7 @@ export function Step2() {
               Qual o Nome da sua Igreja?
             </label>
             <input
-              className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+              className="w-full text-[16px] rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
               placeholder="Insira o nome aqui"
               onChange={(e) =>
                 setFormData({ ...formData, churchName: e.target.value })

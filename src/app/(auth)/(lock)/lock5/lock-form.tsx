@@ -1,19 +1,19 @@
 "use client";
 
+import avatar from "@/public/images/avatar/avatar-7.jpg";
+import { SiteLogo } from "@/src/components/svg";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@/src/components/ui/avatar";
-import avatar from "@/public/images/avatar/avatar-7.jpg";
-import { useState } from "react";
-import { Label } from "@/src/components/ui/label";
-import { Input } from "@/src/components/ui/input";
-import { Icon } from "@iconify/react";
 import { Button } from "@/src/components/ui/button";
-import Link from "next/link";
-import { SiteLogo } from "@/src/components/svg";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
 import { useMediaQuery } from "@/src/hooks/use-media-query";
+import { Icon } from "@iconify/react";
+import Link from "next/link";
+import { useState } from "react";
 const LockForm = () => {
   const [passwordType, setPasswordType] = useState("password");
   const isDesktop2xl = useMediaQuery("(max-width: 1530px)");
@@ -55,6 +55,7 @@ const LockForm = () => {
             type={passwordType}
             id="password"
             size={!isDesktop2xl ? "xl" : "lg"}
+            className="text-[16px]"
           />
           <div
             className="absolute top-1/2 -translate-y-1/2 ltr:right-4 rtl:left-4 cursor-pointer"

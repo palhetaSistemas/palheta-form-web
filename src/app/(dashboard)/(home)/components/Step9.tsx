@@ -16,7 +16,7 @@ export function Step9() {
             Descreva com suas Palavras
           </label>
           <textarea
-            className="resize-none w-full h-52 rounded-xl border px-4 py-2 focus:outline-none placeholder:text-default-400"
+            className="resize-none w-full text-[16px] h-52 rounded-xl border px-4 py-2 focus:outline-none placeholder:text-default-400"
             placeholder='DESCREVA AQUI O QUE VOCÊ DESEJA PARA SEU PROJETO ARQUITETÔNICO, APÓS ISSO APENAS CLIQUE EM "PRÓXIMO"'
             onChange={(e) =>
               setFormData({ ...formData, description: e.target.value })

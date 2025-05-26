@@ -349,7 +349,7 @@ export function Step1() {
               value={cityInput}
               onChange={(e) => setCityInput(e.target.value)}
               placeholder="Digite sua cidade"
-              className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 text-[#123262]"
+              className="w-full rounded-xl text-[16px] border-2 border-[#123262] h-12 px-4 text-[#123262]"
             />
           </div>
         )}

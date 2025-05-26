@@ -1,20 +1,18 @@
 "use client";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { SiteLogo } from "@/src/components/svg";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
-import { Loader2 } from "lucide-react";
-import toast from "react-hot-toast";
+import { useMediaQuery } from "@/src/hooks/use-media-query";
 import { cn } from "@/src/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import logo from "@/public/images/logo/logo-1.png";
-import Image from "next/image";
-import { useMediaQuery } from "@/src/hooks/use-media-query";
-import { SiteLogo } from "@/src/components/svg";
+import React from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { z } from "zod";
 
 const schema = z.object({
   email: z.string().email({ message: "Your email is invalid." }),
@@ -66,7 +64,7 @@ const ForgotForm = () => {
             type="email"
             id="email"
             className={cn("", {
-              "border-destructive": errors.email,
+              "border-destructive text-[16px]": errors.email,
             })}
             size={!isDesktop2xl ? "xl" : "lg"}
           />

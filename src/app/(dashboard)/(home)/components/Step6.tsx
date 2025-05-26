@@ -15,7 +15,7 @@ export function Step6() {
             Largura
           </label>
           <input
-            className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+            className="w-full rounded-xl text-[16px] border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
             placeholder="Insira a Largura"
             onChange={(e) =>
               setFormData({ ...formData, churchWidth: e.target.value })
@@ -29,7 +29,7 @@ export function Step6() {
               Comprimento
             </label>
             <input
-              className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+              className="w-full rounded-xl text-[16px] border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
               placeholder="Insira o Comprimento"
               onChange={(e) =>
                 setFormData({ ...formData, churchLength: e.target.value })

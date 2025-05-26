@@ -229,7 +229,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
         side="bottom"
-        className="min-h-1/2 flex flex-col w-full lg:w-[500px] lg:mx-auto justify-between max-h-[calc(100%-15rem)]"
+        className="min-h-1/2 flex flex-col w-full lg:w-[500px] lg:mx-auto justify-between "
       >
         {currentStep > 0 && (
           <ArrowLeft

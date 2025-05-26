@@ -16,7 +16,7 @@ export function Step0() {
             Insira seu nome aqui*
           </label>
           <input
-            className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+            className="w-full text-[16px] rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
             placeholder="Seu nome aqui"
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             value={formData.name}
@@ -27,7 +27,7 @@ export function Step0() {
             Seu sobrenome aqui*
           </label>
           <input
-            className="w-full rounded-xl border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
+            className="w-full rounded-xl text-[16px] border-2 border-[#123262] h-12 px-4 focus:outline-none placeholder:text-default-400"
             placeholder="Seu sobrenome aqui"
             onChange={(e) =>
               setFormData({ ...formData, surname: e.target.value })
