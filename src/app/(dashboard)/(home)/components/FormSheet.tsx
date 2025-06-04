@@ -62,7 +62,11 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       if (formData.objective === null) {
         return toast.error("Preencha seu objetivo");
       } else if (formData.objective !== null) {
-        return setCurrentStep(currentStep + 1);
+        if (formData.objective === 2) {
+          return setCurrentStep(currentStep + 2);
+        } else if (formData.objective !== 2) {
+          return setCurrentStep(currentStep + 1);
+        }
       }
     } else if (currentStep === 4) {
       if (formData.expectedCapacity === null) {
@@ -103,7 +107,11 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       if (formData.expectedInvestment === null) {
         return toast.error("Preencha seu investimento esperado");
       } else if (formData.expectedInvestment !== null) {
-        return setCurrentStep(currentStep + 1);
+        if (formData.objective === 2) {
+          return setCurrentStep(currentStep + 2);
+        } else if (formData.objective !== 2) {
+          return setCurrentStep(currentStep + 1);
+        }
       }
     } else if (currentStep === 9) {
       return setCurrentStep(currentStep + 1);
@@ -124,6 +132,24 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         formData.selectedDate.time !== null
       ) {
         return setCurrentStep(currentStep + 1);
+      }
+    }
+  };
+
+  const HandlePreviousStep = () => {
+    if (currentStep <= 2) {
+      return setCurrentStep(currentStep - 1);
+    } else if (currentStep > 2) {
+      if (formData.objective === 2) {
+        if (currentStep === 5) {
+          return setCurrentStep(currentStep - 2);
+        } else if (currentStep === 10) {
+          return setCurrentStep(8);
+        } else {
+          return setCurrentStep(currentStep - 1);
+        }
+      } else {
+        return setCurrentStep(currentStep - 1);
       }
     }
   };
@@ -234,9 +260,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         {currentStep > 0 && (
           <ArrowLeft
             className="text-[#123262] absolute top-2 left-2 w-6 h-6"
-            onClick={() => {
-              setCurrentStep(currentStep - 1);
-            }}
+            onClick={HandlePreviousStep}
           />
         )}
         {currentStep === 0 ? (
