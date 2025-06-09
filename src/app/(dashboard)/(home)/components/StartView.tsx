@@ -6,10 +6,14 @@ import { FormSheet } from "./FormSheet";
 export function StartView() {
   const [openFormSheet, setOpenFormSheet] = useState(false);
   const [isIphone, setIsIphone] = useState(false);
-  let isIphonee = navigator.userAgent.includes("iPhone");
+
   useEffect(() => {
-    if (isIphonee) setIsIphone(true);
-  }, [isIphonee]);
+    if (typeof window !== "undefined") {
+      const isIphonee = navigator.userAgent.includes("iPhone");
+      if (isIphonee) setIsIphone(true);
+    }
+  }, []);
+
   return (
     <>
       <div
