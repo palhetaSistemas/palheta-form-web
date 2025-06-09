@@ -23,7 +23,7 @@ export function Step6() {
             value={formData.churchWidth}
           />
         </div>
-        {formData.objective !== 2 && (
+        {formData.objective?.name !== "Fachada" && (
           <div className="flex flex-col">
             <label className="text-default-600 w-max font-semibold text-sm">
               Comprimento

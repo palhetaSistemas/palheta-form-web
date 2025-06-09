@@ -43,14 +43,17 @@ export function Step1() {
 
   async function handleIBGECountry() {
     try {
-      const response = await fetch("https://restcountries.com/v3.1/all");
-      const data = await response.json();
-
+      const response = await IBGEAPI("/paises");
+      console.log("response: ", response);
+      const data = await response.body;
+      console.log("data: ", data);
       const countries: CountryProps[] = data.map((country: any) => ({
-        label: country.translations.por.common || country.name.common,
-        value: country.cca2,
-        id: country.ccn3,
-        flag: country.flags.svg,
+        label: country.nome,
+        value: country.id["ISO-ALPHA-2"],
+        id: country.id,
+        flag: `https://flagcdn.com/256x192/${country.id[
+          "ISO-ALPHA-2"
+        ].toLowerCase()}.png`,
       }));
 
       countries.sort((a, b) => a.label.localeCompare(b.label));
@@ -124,7 +127,15 @@ export function Step1() {
       }
     }
   }, [selectedCity]);
-
+  useEffect(() => {
+    setSelectedCity(null);
+    setSelectedState(null);
+    setFormData((prev) => ({
+      ...prev,
+      state: "",
+      city: "",
+    }));
+  }, [selectedCountry]);
   useEffect(() => {
     if (selectedCountry?.value !== "BR" && cityInput) {
       setFormData((prev) => ({
@@ -185,7 +196,10 @@ export function Step1() {
                   return 0;
                 }}
               >
-                <CommandInput placeholder="Pesquisar..." />
+                <CommandInput
+                  placeholder="Pesquisar..."
+                  className="text-[16px] "
+                />
                 <CommandEmpty>Não encontrado.</CommandEmpty>
                 <CommandGroup>
                   <ScrollArea
@@ -256,7 +270,10 @@ export function Step1() {
                       return 0;
                     }}
                   >
-                    <CommandInput placeholder="Pesquisar..." />
+                    <CommandInput
+                      placeholder="Pesquisar..."
+                      className="text-[16px] "
+                    />
                     <CommandEmpty>Não encontrado.</CommandEmpty>
                     <CommandGroup>
                       <ScrollArea
@@ -314,7 +331,10 @@ export function Step1() {
                       return 0;
                     }}
                   >
-                    <CommandInput placeholder="Pesquisar..." />
+                    <CommandInput
+                      placeholder="Pesquisar..."
+                      className="text-[16px] "
+                    />
                     <CommandEmpty>Não encontrado.</CommandEmpty>
                     <CommandGroup>
                       <ScrollArea

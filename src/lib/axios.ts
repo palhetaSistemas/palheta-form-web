@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const ApiUrl = "";
+export const ApiUrl = "https://api.palhetaarquitetura.com.br";
 export const token = "";
 export const refreshToken = "";
 export const localHost = "http://localhost:3333";

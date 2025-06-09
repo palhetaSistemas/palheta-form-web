@@ -1,7 +1,6 @@
 "use client";
 import { useFormContext } from "@/src/context/Contex";
 import { cn } from "@/src/lib/utils";
-import { useState } from "react";
 
 export function Step4() {
   const { formData, setFormData } = useFormContext();
@@ -17,27 +16,33 @@ export function Step4() {
         </label>
         <label
           onClick={() => {
-            if (formData.expectedCapacity === 0) {
+            if (formData.expectedCapacity === "ENTRE 100 E 200 PESSOAS") {
               setFormData({ ...formData, expectedCapacity: null });
             } else {
-              setFormData({ ...formData, expectedCapacity: 0 });
+              setFormData({
+                ...formData,
+                expectedCapacity: "ENTRE 100 E 200 PESSOAS",
+              });
             }
           }}
           className={cn(
             "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-            formData.expectedCapacity === 0 && "border-[#123262] shadow-lg"
+            formData.expectedCapacity === "ENTRE 100 E 200 PESSOAS" &&
+              "border-[#123262] shadow-lg"
           )}
         >
           <div
             className={cn(
               "w-5 h-5 border rounded-full flex items-center justify-center",
-              formData.expectedCapacity === 0 && "border-none"
+              formData.expectedCapacity === "ENTRE 100 E 200 PESSOAS" &&
+                "border-none"
             )}
           >
             <div
               className={cn(
                 "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                formData.expectedCapacity === 0 && "opacity-100"
+                formData.expectedCapacity === "ENTRE 100 E 200 PESSOAS" &&
+                  "opacity-100"
               )}
             />
           </div>
@@ -47,27 +52,28 @@ export function Step4() {
         </label>
         <label
           onClick={() => {
-            if (formData.expectedCapacity === 1) {
+            if (formData.expectedCapacity === "ATÉ 400 PESSOAS") {
               setFormData({ ...formData, expectedCapacity: null });
             } else {
-              setFormData({ ...formData, expectedCapacity: 1 });
+              setFormData({ ...formData, expectedCapacity: "ATÉ 400 PESSOAS" });
             }
           }}
           className={cn(
             "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-            formData.expectedCapacity === 1 && "border-[#123262] shadow-lg"
+            formData.expectedCapacity === "ATÉ 400 PESSOAS" &&
+              "border-[#123262] shadow-lg"
           )}
         >
           <div
             className={cn(
               "w-5 h-5 border rounded-full flex items-center justify-center",
-              formData.expectedCapacity === 1 && "border-none"
+              formData.expectedCapacity === "ATÉ 400 PESSOAS" && "border-none"
             )}
           >
             <div
               className={cn(
                 "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                formData.expectedCapacity === 1 && "opacity-100"
+                formData.expectedCapacity === "ATÉ 400 PESSOAS" && "opacity-100"
               )}
             />
           </div>
@@ -75,27 +81,33 @@ export function Step4() {
         </label>
         <label
           onClick={() => {
-            if (formData.expectedCapacity === 2) {
+            if (formData.expectedCapacity === "ENTRE 500 E 900 PESSOAS") {
               setFormData({ ...formData, expectedCapacity: null });
             } else {
-              setFormData({ ...formData, expectedCapacity: 2 });
+              setFormData({
+                ...formData,
+                expectedCapacity: "ENTRE 500 E 900 PESSOAS",
+              });
             }
           }}
           className={cn(
             "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-            formData.expectedCapacity === 2 && "border-[#123262] shadow-lg"
+            formData.expectedCapacity === "ENTRE 500 E 900 PESSOAS" &&
+              "border-[#123262] shadow-lg"
           )}
         >
           <div
             className={cn(
               "w-5 h-5 border rounded-full flex items-center justify-center",
-              formData.expectedCapacity === 2 && "border-none"
+              formData.expectedCapacity === "ENTRE 500 E 900 PESSOAS" &&
+                "border-none"
             )}
           >
             <div
               className={cn(
                 "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                formData.expectedCapacity === 2 && "opacity-100"
+                formData.expectedCapacity === "ENTRE 500 E 900 PESSOAS" &&
+                  "opacity-100"
               )}
             />
           </div>
@@ -105,27 +117,33 @@ export function Step4() {
         </label>
         <label
           onClick={() => {
-            if (formData.expectedCapacity === 3) {
+            if (formData.expectedCapacity === "ENTRE 1000 E 2000 PESSOAS") {
               setFormData({ ...formData, expectedCapacity: null });
             } else {
-              setFormData({ ...formData, expectedCapacity: 3 });
+              setFormData({
+                ...formData,
+                expectedCapacity: "ENTRE 1000 E 2000 PESSOAS",
+              });
             }
           }}
           className={cn(
             "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-            formData.expectedCapacity === 3 && "border-[#123262] shadow-lg"
+            formData.expectedCapacity === "ENTRE 1000 E 2000 PESSOAS" &&
+              "border-[#123262] shadow-lg"
           )}
         >
           <div
             className={cn(
               "w-5 h-5 border rounded-full flex items-center justify-center",
-              formData.expectedCapacity === 3 && "border-none"
+              formData.expectedCapacity === "ENTRE 1000 E 2000 PESSOAS" &&
+                "border-none"
             )}
           >
             <div
               className={cn(
                 "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                formData.expectedCapacity === 3 && "opacity-100"
+                formData.expectedCapacity === "ENTRE 1000 E 2000 PESSOAS" &&
+                  "opacity-100"
               )}
             />
           </div>
@@ -135,27 +153,33 @@ export function Step4() {
         </label>
         <label
           onClick={() => {
-            if (formData.expectedCapacity === 4) {
+            if (formData.expectedCapacity === "ENTRE 3000 E 5000 PESSOAS") {
               setFormData({ ...formData, expectedCapacity: null });
             } else {
-              setFormData({ ...formData, expectedCapacity: 4 });
+              setFormData({
+                ...formData,
+                expectedCapacity: "ENTRE 3000 E 5000 PESSOAS",
+              });
             }
           }}
           className={cn(
             "w-full flex items-center gap-2 rounded-xl border-2 h-12 px-4 relative transition duration-150",
-            formData.expectedCapacity === 4 && "border-[#123262] shadow-lg"
+            formData.expectedCapacity === "ENTRE 3000 E 5000 PESSOAS" &&
+              "border-[#123262] shadow-lg"
           )}
         >
           <div
             className={cn(
               "w-5 h-5 border rounded-full flex items-center justify-center",
-              formData.expectedCapacity === 4 && "border-none"
+              formData.expectedCapacity === "ENTRE 3000 E 5000 PESSOAS" &&
+                "border-none"
             )}
           >
             <div
               className={cn(
                 "opacity-0 w-4 h-4 rounded-full bg-[#123262] transition duration-150",
-                formData.expectedCapacity === 4 && "opacity-100"
+                formData.expectedCapacity === "ENTRE 3000 E 5000 PESSOAS" &&
+                  "opacity-100"
               )}
             />
           </div>

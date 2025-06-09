@@ -1,8 +1,10 @@
 "use client";
+import { ProposalStatus, ProposalType } from "@/src/@types/forms";
 import { Sheet, SheetContent } from "@/src/components/ui/sheet";
 import { useFormContext } from "@/src/context/Contex";
+import { getAPI, PostAPI } from "@/src/lib/axios";
 import { cn } from "@/src/lib/utils";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Step0 } from "./Step0";
@@ -27,10 +29,66 @@ interface FormSheetProps {
 export function FormSheet({ open, setOpen }: FormSheetProps) {
   const { formData } = useFormContext();
   const [currentStep, setCurrentStep] = useState(0);
+  const moment = require("moment");
   const [allowNextStep, setAllowNextStep] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   console.log("currentStep: ", currentStep);
-
+  const [proposalStatus, setProposalStatus] = useState<ProposalStatus | null>(
+    null
+  );
+  const [proposalType, setProposalType] = useState<ProposalType[] | null>(null);
+  const [selectedProposalType, setSelectedProposalType] =
+    useState<ProposalType | null>(null);
+  async function handleGetProposalType() {
+    const response = await getAPI("proposal-type");
+    setProposalType(response.body.types);
+    console.log("proposalType: ", response);
+  }
+  async function handleGetProposalStatus() {
+    const response = await getAPI("/proposal-status/first");
+    setProposalStatus(response.body.status);
+  }
+  useEffect(() => {
+    handleGetProposalType();
+    handleGetProposalStatus();
+  }, []);
+  async function SendForm() {
+    setIsLoading(true);
+    const payload = {
+      name: formData.name,
+      lastName: formData.surname,
+      country: formData.country,
+      role: formData.churchPosition,
+      churchName: formData.churchName,
+      goal: formData.objective?.name,
+      description: formData.description,
+      phone: formData.mobilePhone,
+      proposalStatusId: proposalStatus?.id,
+      proposalTypeId: formData.objective?.id,
+      callDate: moment(formData.selectedDate.date).toDate(),
+      callTime: formData.selectedDate.time,
+      capacity: formData.expectedCapacity,
+      city: formData.city,
+      state: formData.state,
+      targetValue: formData.expectedCost,
+      expectedProjectValue: formData.expectedInvestment,
+      churchWidth: formData.churchWidth,
+      churchHeight: formData.churchLength,
+      haveOtherProposals: !formData.firstBudget,
+    };
+    console.log("payload", payload);
+    const result = await PostAPI("/proposal/form", payload);
+    console.log("resultado", result);
+    if (result.status === 200) {
+      setIsLoading(false);
+      setCurrentStep(currentStep + 1);
+    } else {
+      setIsLoading(false);
+      toast.error("Erro ao enviar formulário, tente novamente mais tarde");
+    }
+    setIsLoading(false);
+  }
+  console.log("formData: ", formData.country);
   const HandleNextStep = () => {
     if (currentStep === 0) {
       if (formData.name === "" || formData.surname === "") {
@@ -39,9 +97,11 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 1) {
-      if (formData.state === "" || formData.city === "") {
-        return toast.error("Preencha seu estado e cidade");
-      } else if (formData.state !== "" && formData.city !== "") {
+      if (formData.country === "" || formData.city === "") {
+        return toast.error("Preencha seu estado, cidade e país");
+      } else if (formData.country !== "BRASIL" && formData.city === "") {
+        return toast.error("Preencha sua cidade");
+      } else {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 2) {
@@ -77,13 +137,13 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
-      if (formData.objective === 2) {
+      if (formData.objective?.name === "Fachada") {
         if (formData.churchWidth === "") {
           return toast.error("Preencha a largura da igreja");
         } else if (formData.churchWidth !== "") {
           return setCurrentStep(currentStep + 1);
         }
-      } else if (formData.objective !== 2) {
+      } else if (formData.objective?.name !== "Fachada") {
         if (formData.churchWidth === "" || formData.churchLength === "") {
           return toast.error("Preencha a largura e comprimento da igreja");
         } else if (
@@ -123,7 +183,9 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         formData.selectedDate.date !== null &&
         formData.selectedDate.time !== null
       ) {
-        return setCurrentStep(currentStep + 1);
+        setIsLoading(true);
+        return SendForm();
+        // return setCurrentStep(currentStep + 1);
       }
     }
   };
@@ -136,9 +198,9 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         setAllowNextStep(true);
       }
     } else if (currentStep === 1) {
-      if (formData.state === "" || formData.city === "") {
+      if (formData.country === "" || formData.city === "") {
         setAllowNextStep(false);
-      } else if (formData.state !== "" && formData.city !== "") {
+      } else if (formData.country !== "" && formData.city !== "") {
         setAllowNextStep(true);
       }
     } else if (currentStep === 2) {
@@ -162,25 +224,25 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         setAllowNextStep(true);
       }
     } else if (currentStep === 4) {
-      if (formData.expectedCapacity === null) {
+      if (formData.expectedCapacity === "") {
         setAllowNextStep(false);
-      } else if (formData.expectedCapacity !== null) {
+      } else if (formData.expectedCapacity !== "") {
         setAllowNextStep(true);
       }
     } else if (currentStep === 5) {
-      if (formData.expectedCost === null) {
+      if (formData.expectedCost === "") {
         setAllowNextStep(false);
-      } else if (formData.expectedCost !== null) {
+      } else if (formData.expectedCost !== "") {
         setAllowNextStep(true);
       }
     } else if (currentStep === 6) {
-      if (formData.objective === 2) {
+      if (formData.objective?.name === "Fachada") {
         if (formData.churchWidth === "") {
           setAllowNextStep(false);
         } else if (formData.churchWidth !== "") {
           setAllowNextStep(true);
         }
-      } else if (formData.objective !== 2) {
+      } else if (formData.objective?.name !== "Fachada") {
         if (formData.churchWidth === "" || formData.churchLength === "") {
           setAllowNextStep(false);
         } else if (
@@ -203,11 +265,18 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         setAllowNextStep(true);
       }
     } else if (currentStep === 9) {
-      setAllowNextStep(true);
+      if (formData.description === "") {
+        setAllowNextStep(false);
+      } else if (formData.description !== "") {
+        setAllowNextStep(true);
+      }
     } else if (currentStep === 10) {
       if (formData.mobilePhone === "") {
         setAllowNextStep(false);
-      } else if (formData.mobilePhone !== "") {
+      } else if (
+        formData.mobilePhone !== "" &&
+        formData.mobilePhone.length === 11
+      ) {
         setAllowNextStep(true);
       }
     } else if (currentStep === 11) {
@@ -246,7 +315,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         ) : currentStep === 2 ? (
           <Step2 />
         ) : currentStep === 3 ? (
-          <Step3 />
+          <Step3 proposalTypes={proposalType} />
         ) : currentStep === 4 ? (
           <Step4 />
         ) : currentStep === 5 ? (
@@ -273,7 +342,15 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
             !allowNextStep && "opacity-50 cursor-not-allowed"
           )}
         >
-          {currentStep !== 12 ? "PRÓXIMO" : "FINALIZAR"}
+          {isLoading ? (
+            <div className="w-full flex items-center justify-center">
+              <Loader2 className="animate-spin" />
+            </div>
+          ) : currentStep !== 12 ? (
+            "PRÓXIMO"
+          ) : (
+            "FINALIZAR"
+          )}
         </button>
       </SheetContent>
     </Sheet>

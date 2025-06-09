@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { FormProps } from "../@types/forms";
 
 interface FormContextProps {
@@ -18,17 +18,18 @@ export const FormContextProvider = ({ children }: ProviderProps) => {
   const [formData, setFormData] = useState<FormProps>({
     name: "",
     surname: "",
+    country: "",
     state: "",
     city: "",
     churchPosition: "",
     churchName: "",
     objective: null,
-    expectedCapacity: null,
-    expectedCost: null,
+    expectedCapacity: "",
+    expectedCost: "",
     churchWidth: "",
     churchLength: "",
     firstBudget: null,
-    expectedInvestment: null,
+    expectedInvestment: "",
     description: "",
     mobilePhone: "",
     selectedDate: {
