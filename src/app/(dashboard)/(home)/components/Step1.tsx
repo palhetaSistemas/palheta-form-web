@@ -44,9 +44,7 @@ export function Step1() {
   async function handleIBGECountry() {
     try {
       const response = await IBGEAPI("/paises");
-      console.log("response: ", response);
       const data = await response.body;
-      console.log("data: ", data);
       const countries: CountryProps[] = data.map((country: any) => ({
         label: country.nome,
         value: country.id["ISO-ALPHA-2"],

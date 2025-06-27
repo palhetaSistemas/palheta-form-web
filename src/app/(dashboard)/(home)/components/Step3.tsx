@@ -49,8 +49,8 @@ export function Step3({ proposalTypes }: Step3Props) {
                     )}
                   />
                 </div>
-                <span className="text-[#123262] text-bold text-xs">
-                  {proposalType.description}
+                <span className="text-[#123262] font-bold text-xs">
+                  {proposalType.name}
                 </span>
               </label>
             ))}
