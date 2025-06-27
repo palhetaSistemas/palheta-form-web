@@ -8,34 +8,46 @@ export function Step5() {
   const options = [
     {
       value:
-        formData.objective?.name !== "Fachada" ? "ATÉ 100 MIL." : "ATÉ 20 MIL",
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+          ? "ATÉ 100 MIL"
+          : "ATÉ 20 MIL",
       label:
-        formData.objective?.name !== "Fachada" ? "ATÉ 100 MIL." : "ATÉ 20 MIL",
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+          ? "ATÉ 100 MIL"
+          : "ATÉ 20 MIL",
     },
     {
       value:
-        formData.objective?.name !== "Fachada" ? "ATÉ 300 MIL" : "ATÉ 50 MIL",
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+          ? "ATÉ 300 MIL"
+          : "ATÉ 50 MIL",
       label:
-        formData.objective?.name !== "Fachada" ? "ATÉ 300 MIL" : "ATÉ 50 MIL",
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+          ? "ATÉ 300 MIL"
+          : "ATÉ 50 MIL",
     },
     {
       value:
-        formData.objective?.name !== "Fachada" ? "ATÉ 500 MIL" : "ATÉ 100 MIL",
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+          ? "ATÉ 500 MIL"
+          : "ATÉ 100 MIL",
       label:
-        formData.objective?.name !== "Fachada" ? "ATÉ 500 MIL" : "ATÉ 100 MIL",
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+          ? "ATÉ 500 MIL"
+          : "ATÉ 100 MIL",
     },
     {
       value:
-        formData.objective?.name !== "Fachada"
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
           ? "ENTRE 700 MIL E 1 MILHÃO"
           : "100 MIL +",
       label:
-        formData.objective?.name !== "Fachada"
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
           ? "ENTRE 700 MIL E 1 MILHÃO"
           : "100 MIL +",
     },
     // opções extras apenas se não for Fachada
-    ...(formData.objective?.name !== "Fachada"
+    ...(formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
       ? [
           {
             value: "ENTRE 1 E 3 MILHÕES",

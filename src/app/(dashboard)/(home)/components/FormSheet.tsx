@@ -32,26 +32,28 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
   const moment = require("moment");
   const [allowNextStep, setAllowNextStep] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  console.log("currentStep: ", currentStep);
   const [proposalStatus, setProposalStatus] = useState<ProposalStatus | null>(
     null
   );
   const [proposalType, setProposalType] = useState<ProposalType[] | null>(null);
   const [selectedProposalType, setSelectedProposalType] =
     useState<ProposalType | null>(null);
+
   async function handleGetProposalType() {
     const response = await getAPI("proposal-type");
     setProposalType(response.body.types);
-    console.log("proposalType: ", response);
   }
+
   async function handleGetProposalStatus() {
     const response = await getAPI("/proposal-status/first");
     setProposalStatus(response.body.status);
   }
+
   useEffect(() => {
     handleGetProposalType();
     handleGetProposalStatus();
   }, []);
+
   async function SendForm() {
     setIsLoading(true);
     const payload = {
@@ -76,9 +78,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       churchHeight: formData.churchLength,
       haveOtherProposals: !formData.firstBudget,
     };
-    console.log("payload", payload);
     const result = await PostAPI("/proposal/form", payload);
-    console.log("resultado", result);
     if (result.status === 200) {
       setIsLoading(false);
       setCurrentStep(currentStep + 1);
@@ -88,7 +88,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
     }
     setIsLoading(false);
   }
-  console.log("formData: ", formData.country);
+
   const HandleNextStep = () => {
     if (currentStep === 0) {
       if (formData.name === "" || formData.surname === "") {
@@ -122,9 +122,11 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       if (formData.objective === null) {
         return toast.error("Preencha seu objetivo");
       } else if (formData.objective !== null) {
-        if (formData.objective === 2) {
+        if (formData.objective?.name === "QUERO REFORMAR SOMENTE A FACHADA.") {
           return setCurrentStep(currentStep + 2);
-        } else if (formData.objective !== 2) {
+        } else if (
+          formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+        ) {
           return setCurrentStep(currentStep + 1);
         }
       }
@@ -141,13 +143,15 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
-      if (formData.objective?.name === "Fachada") {
+      if (formData.objective?.name === "QUERO REFORMAR SOMENTE A FACHADA.") {
         if (formData.churchWidth === "") {
           return toast.error("Preencha a largura da igreja");
         } else if (formData.churchWidth !== "") {
           return setCurrentStep(currentStep + 1);
         }
-      } else if (formData.objective?.name !== "Fachada") {
+      } else if (
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+      ) {
         if (formData.churchWidth === "" || formData.churchLength === "") {
           return toast.error("Preencha a largura e comprimento da igreja");
         } else if (
@@ -167,9 +171,11 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
       if (formData.expectedInvestment === null) {
         return toast.error("Preencha seu investimento esperado");
       } else if (formData.expectedInvestment !== null) {
-        if (formData.objective === 2) {
+        if (formData.objective?.name === "QUERO REFORMAR SOMENTE A FACHADA.") {
           return setCurrentStep(currentStep + 2);
-        } else if (formData.objective !== 2) {
+        } else if (
+          formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+        ) {
           return setCurrentStep(currentStep + 1);
         }
       }
@@ -202,7 +208,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
     if (currentStep <= 2) {
       return setCurrentStep(currentStep - 1);
     } else if (currentStep > 2) {
-      if (formData.objective === 2) {
+      if (formData.objective?.name === "QUERO REFORMAR SOMENTE A FACHADA.") {
         if (currentStep === 5) {
           return setCurrentStep(currentStep - 2);
         } else if (currentStep === 10) {
@@ -262,13 +268,15 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         setAllowNextStep(true);
       }
     } else if (currentStep === 6) {
-      if (formData.objective?.name === "Fachada") {
+      if (formData.objective?.name === "QUERO REFORMAR SOMENTE A FACHADA.") {
         if (formData.churchWidth === "") {
           setAllowNextStep(false);
         } else if (formData.churchWidth !== "") {
           setAllowNextStep(true);
         }
-      } else if (formData.objective?.name !== "Fachada") {
+      } else if (
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+      ) {
         if (formData.churchWidth === "" || formData.churchLength === "") {
           setAllowNextStep(false);
         } else if (
@@ -291,11 +299,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         setAllowNextStep(true);
       }
     } else if (currentStep === 9) {
-      if (formData.description === "") {
-        setAllowNextStep(false);
-      } else if (formData.description !== "") {
-        setAllowNextStep(true);
-      }
+      setAllowNextStep(true);
     } else if (currentStep === 10) {
       if (formData.mobilePhone === "") {
         setAllowNextStep(false);
