@@ -49,7 +49,7 @@ export function StartView() {
       </div>
       <button
         onClick={() => setOpenFormSheet(true)}
-        className={` ${
+        className={`${isCompleted && "hidden"} ${
           isIphone ? "bottom-40" : "bottom-20 md:bottom-10"
         } absolute  mx-auto w-11/12 h-12 bg-white border border-[#123262] text-[#123262] font-bold text-lg rounded-lg`}
       >
