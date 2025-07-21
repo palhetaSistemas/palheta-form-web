@@ -6,6 +6,7 @@ import { FormSheet } from "./FormSheet";
 export function StartView() {
   const [openFormSheet, setOpenFormSheet] = useState(false);
   const [isIphone, setIsIphone] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -37,11 +38,12 @@ export function StartView() {
           )}
         >
           <span className="font-bold text-2xl text-center text-white">
-            SOLICITE SEU ORÇAMENTO
+            {isCompleted ? "ORÇAMENTO SOLICITADO" : "SOLICITE SEU ORÇAMENTO"}
           </span>
           <span className="text-white text-center">
-            Por favor, preencha e envie este formulário para receber seu
-            orçamento de projeto.
+            {isCompleted
+              ? "Obrigado por solicitar um orçamento, aguarde que a Palheta Arquitetura entraremos em contato em breve."
+              : "Por favor, preencha e envie este formulário para receber seu orçamento de projeto."}
           </span>
         </div>
       </div>
@@ -53,7 +55,12 @@ export function StartView() {
       >
         COMEÇAR
       </button>
-      <FormSheet open={openFormSheet} setOpen={setOpenFormSheet} />
+      <FormSheet
+        open={openFormSheet}
+        setOpen={setOpenFormSheet}
+        isCompleted={isCompleted}
+        setIsCompleted={setIsCompleted}
+      />
     </>
   );
 }

@@ -15,7 +15,6 @@ export function Step10() {
     const foundCountry = countryCodes.countries.find(
       (country) => country.phone_code === countryPhoneCode
     );
-    console.log("foundCountry: ", foundCountry);
     if (foundCountry) {
       setCountryCode(foundCountry.country_code);
     } else {

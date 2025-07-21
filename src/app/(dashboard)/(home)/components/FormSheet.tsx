@@ -24,9 +24,16 @@ import { Step9 } from "./Step9";
 interface FormSheetProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isCompleted: boolean;
+  setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function FormSheet({ open, setOpen }: FormSheetProps) {
+export function FormSheet({
+  open,
+  setOpen,
+  isCompleted,
+  setIsCompleted,
+}: FormSheetProps) {
   const { formData } = useFormContext();
   const [currentStep, setCurrentStep] = useState(0);
   const moment = require("moment");
@@ -82,11 +89,13 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
     if (result.status === 200) {
       setIsLoading(false);
       setCurrentStep(currentStep + 1);
+      return toast.success("Formulário enviado com sucesso!");
     } else {
       setIsLoading(false);
-      toast.error("Erro ao enviar formulário, tente novamente mais tarde");
+      return toast.error(
+        "Erro ao enviar formulário, tente novamente mais tarde"
+      );
     }
-    setIsLoading(false);
   }
 
   const HandleNextStep = () => {
@@ -201,10 +210,14 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         return SendForm();
         // return setCurrentStep(currentStep + 1);
       }
+    } else if (currentStep === 12) {
+      setIsCompleted(true);
+      return setOpen(false);
     }
   };
 
   const HandlePreviousStep = () => {
+    if (isCompleted) return;
     if (currentStep <= 2) {
       return setCurrentStep(currentStep - 1);
     } else if (currentStep > 2) {
@@ -330,7 +343,7 @@ export function FormSheet({ open, setOpen }: FormSheetProps) {
         side="bottom"
         className="min-h-1/2 flex flex-col w-full lg:w-[500px] lg:mx-auto justify-between "
       >
-        {currentStep > 0 && (
+        {currentStep > 0 && !isCompleted && (
           <ArrowLeft
             className="text-[#123262] absolute top-2 left-2 w-6 h-6"
             onClick={HandlePreviousStep}
