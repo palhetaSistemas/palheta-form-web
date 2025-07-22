@@ -140,15 +140,15 @@ export function FormSheet({
         }
       }
     } else if (currentStep === 4) {
-      if (formData.expectedCapacity === null) {
+      if (formData.expectedCapacity === "") {
         return toast.error("Preencha sua capacidade esperada");
-      } else if (formData.expectedCapacity !== null) {
+      } else if (formData.expectedCapacity !== "") {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 5) {
-      if (formData.expectedCost === null) {
+      if (formData.expectedCost === "") {
         return toast.error("Preencha seu orçamento esperado");
-      } else if (formData.expectedCost !== null) {
+      } else if (formData.expectedCost !== "") {
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
@@ -177,9 +177,9 @@ export function FormSheet({
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 8) {
-      if (formData.expectedInvestment === null) {
+      if (formData.expectedInvestment === "") {
         return toast.error("Preencha seu investimento esperado");
-      } else if (formData.expectedInvestment !== null) {
+      } else if (formData.expectedInvestment !== "") {
         if (formData.objective?.name === "QUERO REFORMAR SOMENTE A FACHADA.") {
           return setCurrentStep(currentStep + 2);
         } else if (
@@ -306,9 +306,9 @@ export function FormSheet({
         setAllowNextStep(true);
       }
     } else if (currentStep === 8) {
-      if (formData.expectedInvestment === null) {
+      if (formData.expectedInvestment === "") {
         setAllowNextStep(false);
-      } else if (formData.expectedInvestment !== null) {
+      } else if (formData.expectedInvestment !== "") {
         setAllowNextStep(true);
       }
     } else if (currentStep === 9) {
@@ -378,6 +378,7 @@ export function FormSheet({
         )}
         <button
           onClick={HandleNextStep}
+          disabled={isLoading}
           className={cn(
             "w-full h-12 bg-gradient-to-b from-[#123262dd] to-[#123262] shadow-md border border-[#123262] text-white font-bold text-lg rounded-xl transition duration-300",
             !allowNextStep && "opacity-50 cursor-not-allowed"

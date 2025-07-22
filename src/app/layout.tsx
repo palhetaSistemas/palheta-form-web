@@ -1,4 +1,3 @@
-import { siteConfig } from "@/src/config/site";
 import AuthProvider from "@/src/provider/auth.provider";
 import DirectionProvider from "@/src/provider/direction.provider";
 import Providers from "@/src/provider/providers";
@@ -20,10 +19,8 @@ const poppins = Poppins({
 moment.locale("pt-br");
 export const metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    default: "Palheta - Orçamento",
   },
-  description: siteConfig.description,
   icons: {
     icon: "/icon.png",
   },

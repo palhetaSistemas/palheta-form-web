@@ -1,6 +1,4 @@
 "use client";
-import React from "react";
-import { SiteLogo } from "@/src/components/svg";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 const LayoutLoader = () => {

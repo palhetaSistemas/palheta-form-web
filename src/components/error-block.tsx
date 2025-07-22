@@ -1,10 +1,10 @@
 "use client";
-import Image from "next/image";
-import lightImage from "@/public/images/error/light-404.png";
 import darkImage from "@/public/images/error/dark-404.png";
+import lightImage from "@/public/images/error/light-404.png";
 import { Button } from "@/src/components/ui/button";
-import Link from "next/link";
 import { useTheme } from "next-themes";
+import Image from "next/image";
+import Link from "next/link";
 const ErrorBlock = () => {
   const { theme } = useTheme();
   return (
