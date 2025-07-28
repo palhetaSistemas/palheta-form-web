@@ -1,56 +1,69 @@
 "use client";
 
+import { useFormContext } from "@/src/context/Contex";
+import { cn } from "@/src/lib/utils";
 import moment from "moment";
 import "moment/locale/pt-br";
 import { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { cn } from "@/src/lib/utils";
-import { useFormContext } from "@/src/context/Contex";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { DatesProps } from "./FormSheet";
 
 interface DateInfo {
   day: number;
   weekDay: string;
   date: string;
+  hours: {
+    time: string;
+    isAvailable: boolean;
+  }[];
 }
 
-export function Step11() {
+interface Step11Props {
+  dates: DatesProps[];
+}
+
+export function Step11({ dates }: Step11Props) {
   const { formData, setFormData } = useFormContext();
-  const [dateRange, setDateRange] = useState<DateInfo[] | null>(null);
-  const times = [
-    { time: "10:30", available: true, selected: false },
-    { time: "11:00", available: true, selected: false },
-    { time: "11:30", available: true, selected: false },
-    { time: "13:00", available: false, selected: false },
-    { time: "13:30", available: false, selected: false },
-    { time: "14:00", available: true, selected: false },
-    { time: "17:00", available: false, selected: false },
-    { time: "17:30", available: true, selected: false },
-  ];
+  const [dateRange, setDateRange] = useState<DateInfo[]>([]);
+  const [selectedDate, setSelectedDate] = useState<DateInfo | null>(null);
 
-  const GetNextDays = (): DateInfo[] => {
-    const dias: DateInfo[] = [];
+  const processApiDates = (): DateInfo[] => {
+    const processedDates: DateInfo[] = dates.map((dateItem) => {
+      // Create a date from the current month and the provided day
+      const currentDate = moment().date(dateItem.day);
 
-    // Loop de 0 (hoje) até 15 dias à frente
-    for (let i = 0; i <= 15; i++) {
-      const dataAtual = moment().add(i, "days");
-      dias.push({
-        day: dataAtual.date(), // Retorna o dia do mês
-        weekDay: dataAtual.format("dddd"), // Retorna o dia da semana por extenso
-        date: dataAtual.format("YYYY-MM-DD"),
-      });
-    }
-    setDateRange(dias);
-    return dias;
+      return {
+        day: dateItem.day,
+        weekDay: currentDate.format("dddd"),
+        date: currentDate.format("YYYY-MM-DD"),
+        hours: dateItem.hours,
+      };
+    });
+
+    setDateRange(processedDates);
+    return processedDates;
   };
 
   useEffect(() => {
-    GetNextDays();
-  }, []);
+    if (dates && dates.length > 0) {
+      processApiDates();
+    }
+  }, [dates]);
+
+  // Find the selected date's hours when a date is selected
+  const getSelectedDateHours = () => {
+    if (!formData.selectedDate.date) return [];
+
+    const selected = dateRange.find(
+      (item) => item.date === formData.selectedDate.date
+    );
+    return selected?.hours || [];
+  };
 
   return (
     <>
-      <span className="font-bold text-lg text-[#123262] w-max mx-auto">
+      <span className="font-bold text-lg mb-4 text-[#123262] w-max mx-auto">
         AGENDAMENTO:
       </span>
       <span className="font-semibold text-default-600 mx-auto">
@@ -63,67 +76,68 @@ export function Step11() {
             DATA*:
           </label>
           <div className="w-full">
-            <Swiper spaceBetween={10} centeredSlides slidesPerView={5}>
-              {dateRange &&
-                dateRange.map((item, index) => (
-                  <SwiperSlide key={index}>
-                    <div
-                      onClick={() => {
-                        setFormData({
-                          ...formData,
-                          selectedDate: {
-                            date: item.date,
-                            time: "",
-                          },
-                        });
-                      }}
-                      className={cn(
-                        "flex flex-col text-default-600 items-center rounded-xl p-2 transition duration-300",
-                        formData.selectedDate.date === item.date &&
-                          "bg-[#123262] text-white"
-                      )}
-                    >
-                      <span className="text-xs">
-                        {item.weekDay.includes("-")
-                          ? item.weekDay.split("-")[0]
-                          : item.weekDay}
-                      </span>
-                      <span className="font-bold text-base">{item.day}</span>
-                    </div>
-                  </SwiperSlide>
-                ))}
-            </Swiper>
-          </div>
-          <div className="flex flex-col">
-            <label className="text-[#123262] w-max font-semibold text-sm">
-              HORÁRIO*:
-            </label>
-            <div className="flex flex-wrap items-center justify-center w-full gap-2">
-              {formData.selectedDate.date &&
-                times.map((time, index) => (
-                  <button
-                    key={index}
-                    onClick={() =>
+            <Swiper spaceBetween={10} slidesPerView={5}>
+              {dateRange.map((item, index) => (
+                <SwiperSlide key={index}>
+                  <div
+                    onClick={() => {
                       setFormData({
                         ...formData,
                         selectedDate: {
-                          ...formData.selectedDate,
-                          time: time.time,
+                          date: item.date,
+                          time: "",
                         },
-                      })
-                    }
-                    disabled={!time.available}
+                      });
+                    }}
                     className={cn(
-                      "w-2/5 px-2 text-center py-1 rounded-md border transition duration-300 border-[#123262] text-[#123262]",
-                      !time.available && "bg-[#123262] bg-opacity-40",
-                      formData.selectedDate.time === time.time &&
+                      "flex flex-col text-default-600 items-center rounded-xl p-2 transition duration-300 cursor-pointer",
+                      formData.selectedDate.date === item.date &&
                         "bg-[#123262] text-white"
                     )}
                   >
-                    {time.time}
-                  </button>
-                ))}
-            </div>
+                    <span className="text-xs">
+                      {item.weekDay.includes("-")
+                        ? item.weekDay.split("-")[0]
+                        : item.weekDay}
+                    </span>
+                    <span className="font-bold text-base">{item.day}</span>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
+
+        <div className="flex flex-col">
+          <label className="text-[#123262] w-max font-semibold text-sm">
+            HORÁRIO*:
+          </label>
+          <div className="flex flex-wrap items-center justify-center w-full gap-2">
+            {formData.selectedDate.date &&
+              getSelectedDateHours().map((timeSlot, index) => (
+                <button
+                  key={index}
+                  onClick={() =>
+                    setFormData({
+                      ...formData,
+                      selectedDate: {
+                        ...formData.selectedDate,
+                        time: timeSlot.time,
+                      },
+                    })
+                  }
+                  disabled={!timeSlot.isAvailable}
+                  className={cn(
+                    "w-2/5 px-2 text-center py-1 rounded-md border transition duration-300 border-[#123262] text-[#123262]",
+                    !timeSlot.isAvailable &&
+                      "bg-[#123262] bg-opacity-40 cursor-not-allowed",
+                    formData.selectedDate.time === timeSlot.time &&
+                      "bg-[#123262] text-white"
+                  )}
+                >
+                  {timeSlot.time}
+                </button>
+              ))}
           </div>
         </div>
       </div>

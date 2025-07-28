@@ -185,6 +185,7 @@ export function Step2() {
                 setFormData({ ...formData, churchName: e.target.value })
               }
               value={formData.churchName}
+              autoFocus
             />
           </div>
         </div>

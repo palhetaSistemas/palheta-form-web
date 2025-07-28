@@ -28,6 +28,14 @@ interface FormSheetProps {
   setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+export interface DatesProps {
+  day: number;
+  hours: {
+    time: string;
+    isAvailable: boolean;
+  }[];
+}
+
 export function FormSheet({
   open,
   setOpen,
@@ -45,6 +53,7 @@ export function FormSheet({
   const [proposalType, setProposalType] = useState<ProposalType[] | null>(null);
   const [selectedProposalType, setSelectedProposalType] =
     useState<ProposalType | null>(null);
+  const [dates, setDates] = useState<DatesProps[]>([]);
 
   async function handleGetProposalType() {
     const response = await getAPI("proposal-type");
@@ -56,9 +65,17 @@ export function FormSheet({
     setProposalStatus(response.body.status);
   }
 
+  async function GetAvailableSchedule() {
+    const schedule = await getAPI("/schedule-event/available");
+    if (schedule.status === 200) {
+      setDates(schedule.body.slots);
+    }
+  }
+
   useEffect(() => {
     handleGetProposalType();
     handleGetProposalStatus();
+    GetAvailableSchedule();
   }, []);
 
   async function SendForm() {
@@ -342,6 +359,7 @@ export function FormSheet({
       <SheetContent
         side="bottom"
         className="min-h-1/2 flex flex-col w-full lg:w-[500px] lg:mx-auto justify-between "
+        onKeyDown={(e) => e.key === "Enter" && HandleNextStep()}
       >
         {currentStep > 0 && !isCompleted && (
           <ArrowLeft
@@ -372,7 +390,7 @@ export function FormSheet({
         ) : currentStep === 10 ? (
           <Step10 />
         ) : currentStep === 11 ? (
-          <Step11 />
+          <Step11 dates={dates} />
         ) : (
           <Step12 />
         )}

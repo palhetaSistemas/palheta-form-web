@@ -22,6 +22,7 @@ export function Step9() {
               setFormData({ ...formData, description: e.target.value })
             }
             value={formData.description}
+            autoFocus
           />
         </div>
       </div>

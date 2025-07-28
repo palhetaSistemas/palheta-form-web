@@ -21,6 +21,7 @@ export function Step6() {
               setFormData({ ...formData, churchWidth: e.target.value })
             }
             value={formData.churchWidth}
+            autoFocus
           />
         </div>
         {formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA." && (

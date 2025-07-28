@@ -81,6 +81,7 @@ export function Step10() {
                 }
                 value={formData.mobilePhone}
                 maxLength={15}
+                autoFocus
               />
             </label>
           </div>

@@ -32,6 +32,7 @@ export function Step0() {
                 setFormData({ ...formData, name: e.target.value })
               }
               value={formData.name}
+              autoFocus
             />
           )}
         </div>
