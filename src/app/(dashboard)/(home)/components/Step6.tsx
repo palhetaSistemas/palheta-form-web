@@ -24,7 +24,7 @@ export function Step6() {
             autoFocus
           />
         </div>
-        {formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA." && (
+        {formData.objective?.name !== "QUERO REFORMAR SOMENTE A  FACHADA." && (
           <div className="flex flex-col">
             <label className="text-default-600 w-max font-semibold text-sm">
               Comprimento

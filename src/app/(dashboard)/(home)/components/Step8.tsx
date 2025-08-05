@@ -7,31 +7,31 @@ export function Step8() {
   const options = [
     {
       value:
-        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A  FACHADA."
           ? "ENTRE 7 E 12 MIL REAIS"
           : "ENTRE 3 E 5 MIL REAIS",
       label:
-        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A  FACHADA."
           ? "ENTRE 7 E 12 MIL REAIS"
           : "ENTRE 3 E 5 MIL REAIS",
     },
     {
       value:
-        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A  FACHADA."
           ? "ENTRE 15 E 30 MIL REAIS"
           : "ENTRE 5 E 7 MIL REAIS",
       label:
-        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A  FACHADA."
           ? "ENTRE 15 E 30 MIL REAIS"
           : "ENTRE 5 E 7 MIL REAIS",
     },
     {
       value:
-        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A  FACHADA."
           ? "ENTRE 30 E 50 MIL REAIS"
           : "MAIS DE 7 MIL REAIS",
       label:
-        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A  FACHADA."
           ? "ENTRE 30 E 50 MIL REAIS"
           : "MAIS DE 7 MIL REAIS",
     },

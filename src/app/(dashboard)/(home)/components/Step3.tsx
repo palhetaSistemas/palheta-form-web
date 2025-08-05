@@ -9,6 +9,8 @@ interface Step3Props {
 export function Step3({ proposalTypes }: Step3Props) {
   const { formData, setFormData } = useFormContext();
 
+  console.log("proposalTypes", proposalTypes);
+
   return (
     <>
       <span className="font-bold text-lg text-[#123262] w-max mx-auto">

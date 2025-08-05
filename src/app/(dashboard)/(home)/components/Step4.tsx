@@ -46,7 +46,7 @@ export function Step4() {
               )}
             />
           </div>
-          <span className="text-[#123262] text-bold">
+          <span className="text-[#123262] font-bold">
             ENTRE 100 E 200 PESSOAS
           </span>
         </label>
@@ -77,7 +77,7 @@ export function Step4() {
               )}
             />
           </div>
-          <span className="text-[#123262] text-bold">ATÉ 400 PESSOAS</span>
+          <span className="text-[#123262] font-bold">ATÉ 400 PESSOAS</span>
         </label>
         <label
           onClick={() => {
@@ -111,7 +111,7 @@ export function Step4() {
               )}
             />
           </div>
-          <span className="text-[#123262] text-bold">
+          <span className="text-[#123262] font-bold">
             ENTRE 500 E 900 PESSOAS
           </span>
         </label>
@@ -147,7 +147,7 @@ export function Step4() {
               )}
             />
           </div>
-          <span className="text-[#123262] text-bold">
+          <span className="text-[#123262] font-bold">
             ENTRE 1000 E 2000 PESSOAS
           </span>
         </label>
@@ -183,7 +183,7 @@ export function Step4() {
               )}
             />
           </div>
-          <span className="text-[#123262] text-bold">
+          <span className="text-[#123262] font-bold">
             ENTRE 3000 E 5000 PESSOAS
           </span>
         </label>

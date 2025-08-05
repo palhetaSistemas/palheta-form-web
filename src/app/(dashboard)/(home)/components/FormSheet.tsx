@@ -115,6 +115,8 @@ export function FormSheet({
     }
   }
 
+  console.log("formData", formData);
+
   const HandleNextStep = () => {
     if (currentStep === 0) {
       if (formData.name === "" || formData.surname === "") {
@@ -148,10 +150,10 @@ export function FormSheet({
       if (formData.objective === null) {
         return toast.error("Preencha seu objetivo");
       } else if (formData.objective !== null) {
-        if (formData.objective?.name === "QUERO REFORMAR SOMENTE A FACHADA.") {
+        if (formData.objective?.name === "QUERO REFORMAR SOMENTE A  FACHADA.") {
           return setCurrentStep(currentStep + 2);
         } else if (
-          formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+          formData.objective?.name !== "QUERO REFORMAR SOMENTE A  FACHADA."
         ) {
           return setCurrentStep(currentStep + 1);
         }
@@ -169,14 +171,14 @@ export function FormSheet({
         return setCurrentStep(currentStep + 1);
       }
     } else if (currentStep === 6) {
-      if (formData.objective?.name === "QUERO REFORMAR SOMENTE A FACHADA.") {
+      if (formData.objective?.name === "QUERO REFORMAR SOMENTE A  FACHADA.") {
         if (formData.churchWidth === "") {
           return toast.error("Preencha a largura da igreja");
         } else if (formData.churchWidth !== "") {
           return setCurrentStep(currentStep + 1);
         }
       } else if (
-        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A  FACHADA."
       ) {
         if (formData.churchWidth === "" || formData.churchLength === "") {
           return toast.error("Preencha a largura e comprimento da igreja");
@@ -197,10 +199,10 @@ export function FormSheet({
       if (formData.expectedInvestment === "") {
         return toast.error("Preencha seu investimento esperado");
       } else if (formData.expectedInvestment !== "") {
-        if (formData.objective?.name === "QUERO REFORMAR SOMENTE A FACHADA.") {
+        if (formData.objective?.name === "QUERO REFORMAR SOMENTE A  FACHADA.") {
           return setCurrentStep(currentStep + 2);
         } else if (
-          formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+          formData.objective?.name !== "QUERO REFORMAR SOMENTE A  FACHADA."
         ) {
           return setCurrentStep(currentStep + 1);
         }
@@ -238,7 +240,7 @@ export function FormSheet({
     if (currentStep <= 2) {
       return setCurrentStep(currentStep - 1);
     } else if (currentStep > 2) {
-      if (formData.objective?.name === "QUERO REFORMAR SOMENTE A FACHADA.") {
+      if (formData.objective?.name === "QUERO REFORMAR SOMENTE A  FACHADA.") {
         if (currentStep === 5) {
           return setCurrentStep(currentStep - 2);
         } else if (currentStep === 10) {
@@ -298,14 +300,14 @@ export function FormSheet({
         setAllowNextStep(true);
       }
     } else if (currentStep === 6) {
-      if (formData.objective?.name === "QUERO REFORMAR SOMENTE A FACHADA.") {
+      if (formData.objective?.name === "QUERO REFORMAR SOMENTE A  FACHADA.") {
         if (formData.churchWidth === "") {
           setAllowNextStep(false);
         } else if (formData.churchWidth !== "") {
           setAllowNextStep(true);
         }
       } else if (
-        formData.objective?.name !== "QUERO REFORMAR SOMENTE A FACHADA."
+        formData.objective?.name !== "QUERO REFORMAR SOMENTE A  FACHADA."
       ) {
         if (formData.churchWidth === "" || formData.churchLength === "") {
           setAllowNextStep(false);
