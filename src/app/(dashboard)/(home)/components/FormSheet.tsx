@@ -29,11 +29,8 @@ interface FormSheetProps {
 }
 
 export interface DatesProps {
-  day: number;
-  hours: {
-    time: string;
-    isAvailable: boolean;
-  }[];
+  date: string; // "2025-09-04"
+  hours: { time: string; isAvailable: boolean }[];
 }
 
 export function FormSheet({

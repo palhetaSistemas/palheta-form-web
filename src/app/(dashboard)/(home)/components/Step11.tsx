@@ -4,62 +4,70 @@ import { useFormContext } from "@/src/context/Contex";
 import { cn } from "@/src/lib/utils";
 import moment from "moment";
 import "moment/locale/pt-br";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { DatesProps } from "./FormSheet";
 
+moment.locale("pt-br");
+
 interface DateInfo {
   day: number;
   weekDay: string;
-  date: string;
-  hours: {
-    time: string;
-    isAvailable: boolean;
-  }[];
+  date: string; // YYYY-MM-DD
+  hours: { time: string; isAvailable: boolean }[];
 }
 
 interface Step11Props {
-  dates: DatesProps[];
+  dates: DatesProps[] | { slots: DatesProps[] }; // aceita array direto ou objeto com slots
+}
+
+// garante que sempre retornamos um array de { date, hours }
+function normalizeDates(input: any): DatesProps[] {
+  if (Array.isArray(input)) return input;
+  if (input?.slots && Array.isArray(input.slots)) return input.slots;
+  return [];
 }
 
 export function Step11({ dates }: Step11Props) {
   const { formData, setFormData } = useFormContext();
   const [dateRange, setDateRange] = useState<DateInfo[]>([]);
-  const [selectedDate, setSelectedDate] = useState<DateInfo | null>(null);
 
-  const processApiDates = (): DateInfo[] => {
-    const processedDates: DateInfo[] = dates.map((dateItem) => {
-      // Create a date from the current month and the provided day
-      const currentDate = moment().date(dateItem.day);
+  useEffect(() => {
+    const base = normalizeDates(dates);
+    if (!base.length) {
+      setDateRange([]);
+      return;
+    }
 
+    const processed: DateInfo[] = base.map((d) => {
+      const m = moment(d.date, "YYYY-MM-DD", true); // parse estrito da ISO
       return {
-        day: dateItem.day,
-        weekDay: currentDate.format("dddd"),
-        date: currentDate.format("YYYY-MM-DD"),
-        hours: dateItem.hours,
+        day: m.date(),
+        weekDay: m.format("dddd"),
+        date: m.format("YYYY-MM-DD"),
+        hours: d.hours,
       };
     });
 
-    setDateRange(processedDates);
-    return processedDates;
-  };
+    setDateRange(processed);
 
-  useEffect(() => {
-    if (dates && dates.length > 0) {
-      processApiDates();
+    // Seleciona a primeira data por padrão, se nada estiver selecionado
+    if (!formData?.selectedDate?.date && processed.length) {
+      setFormData({
+        ...formData,
+        selectedDate: { date: processed[0].date, time: "" },
+      });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dates]);
 
-  // Find the selected date's hours when a date is selected
-  const getSelectedDateHours = () => {
-    if (!formData.selectedDate.date) return [];
-
-    const selected = dateRange.find(
-      (item) => item.date === formData.selectedDate.date
-    );
-    return selected?.hours || [];
-  };
+  // Horários da data selecionada
+  const selectedHours = useMemo(() => {
+    const sel = formData?.selectedDate?.date;
+    if (!sel) return [];
+    return dateRange.find((d) => d.date === sel)?.hours ?? [];
+  }, [formData?.selectedDate?.date, dateRange]);
 
   return (
     <>
@@ -70,36 +78,31 @@ export function Step11({ dates }: Step11Props) {
         PARA FINALIZAR, ESCOLHA O MELHOR HORÁRIO PARA VOCÊ RECEBER UMA LIGAÇÃO
         MINHA COM O SEU ORÇAMENTO
       </span>
+
       <div className="flex flex-col gap-4">
+        {/* Datas */}
         <div className="flex flex-col">
           <label className="text-[#123262] w-max font-semibold text-sm">
             DATA*:
           </label>
           <div className="w-full">
             <Swiper spaceBetween={10} slidesPerView={5}>
-              {dateRange.map((item, index) => (
-                <SwiperSlide key={index}>
+              {dateRange.map((item) => (
+                <SwiperSlide key={item.date}>
                   <div
-                    onClick={() => {
+                    onClick={() =>
                       setFormData({
                         ...formData,
-                        selectedDate: {
-                          date: item.date,
-                          time: "",
-                        },
-                      });
-                    }}
+                        selectedDate: { date: item.date, time: "" },
+                      })
+                    }
                     className={cn(
                       "flex flex-col text-default-600 items-center rounded-xl p-2 transition duration-300 cursor-pointer",
-                      formData.selectedDate.date === item.date &&
+                      formData?.selectedDate?.date === item.date &&
                         "bg-[#123262] text-white"
                     )}
                   >
-                    <span className="text-xs">
-                      {item.weekDay.includes("-")
-                        ? item.weekDay.split("-")[0]
-                        : item.weekDay}
-                    </span>
+                    <span className="text-xs capitalize">{item.weekDay}</span>
                     <span className="font-bold text-base">{item.day}</span>
                   </div>
                 </SwiperSlide>
@@ -108,15 +111,16 @@ export function Step11({ dates }: Step11Props) {
           </div>
         </div>
 
+        {/* Horários */}
         <div className="flex flex-col">
           <label className="text-[#123262] w-max font-semibold text-sm">
             HORÁRIO*:
           </label>
           <div className="flex flex-wrap items-center justify-center w-full gap-2">
-            {formData.selectedDate.date &&
-              getSelectedDateHours().map((timeSlot, index) => (
+            {formData?.selectedDate?.date &&
+              selectedHours.map((timeSlot) => (
                 <button
-                  key={index}
+                  key={timeSlot.time}
                   onClick={() =>
                     setFormData({
                       ...formData,
@@ -131,7 +135,7 @@ export function Step11({ dates }: Step11Props) {
                     "w-2/5 px-2 text-center py-1 rounded-md border transition duration-300 border-[#123262] text-[#123262]",
                     !timeSlot.isAvailable &&
                       "bg-[#123262] bg-opacity-40 cursor-not-allowed",
-                    formData.selectedDate.time === timeSlot.time &&
+                    formData?.selectedDate?.time === timeSlot.time &&
                       "bg-[#123262] text-white"
                   )}
                 >
