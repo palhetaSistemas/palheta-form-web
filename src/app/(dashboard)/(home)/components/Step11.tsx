@@ -102,7 +102,9 @@ export function Step11({ dates }: Step11Props) {
                         "bg-[#123262] text-white"
                     )}
                   >
-                    <span className="text-xs capitalize">{item.weekDay}</span>
+                    <span className="text-xs capitalize">
+                      {item.weekDay.split("-")[0]}
+                    </span>
                     <span className="font-bold text-base">{item.day}</span>
                   </div>
                 </SwiperSlide>
