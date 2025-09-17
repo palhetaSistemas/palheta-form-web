@@ -32,6 +32,7 @@ function normalizeDates(input: any): DatesProps[] {
 export function Step11({ dates }: Step11Props) {
   const { formData, setFormData } = useFormContext();
   const [dateRange, setDateRange] = useState<DateInfo[]>([]);
+  console.log("dates", dates);
 
   useEffect(() => {
     const base = normalizeDates(dates);
@@ -68,7 +69,6 @@ export function Step11({ dates }: Step11Props) {
     if (!sel) return [];
     return dateRange.find((d) => d.date === sel)?.hours ?? [];
   }, [formData?.selectedDate?.date, dateRange]);
-
   return (
     <>
       <span className="font-bold text-lg mb-4 text-[#123262] w-max mx-auto">
@@ -78,7 +78,9 @@ export function Step11({ dates }: Step11Props) {
         PARA FINALIZAR, ESCOLHA O MELHOR HORÁRIO PARA VOCÊ RECEBER UMA LIGAÇÃO
         MINHA COM O SEU ORÇAMENTO
       </span>
-
+      <span className="text-center text-primary-50 ">
+        Horários de Brasilia{" "}
+      </span>
       <div className="flex flex-col gap-4">
         {/* Datas */}
         <div className="flex flex-col">

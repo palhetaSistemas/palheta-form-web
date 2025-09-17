@@ -100,9 +100,10 @@ export function FormSheet({
       haveOtherProposals: !formData.firstBudget,
     };
     const result = await PostAPI("/proposal/form", payload);
+    console.log("result", result);
     if (result.status === 200) {
       setIsLoading(false);
-      setCurrentStep(currentStep + 1);
+      // setCurrentStep(currentStep + 1);
       return toast.success("Formulário enviado com sucesso!");
     } else {
       setIsLoading(false);
